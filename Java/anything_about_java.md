@@ -196,8 +196,51 @@ class Main{
 
 
 
+---
+
+### 자바 2차원 배열 정렬하기 
+
+자바에서는 Arrays.sort() 함수를 통해서 손쉽게 배열을 정렬할 수 있다. 하지만 Comparator를 상속 받아서 배열을 정렬하는 이 메소드를 제대로 이해하기 위해서는 상속받은 Comparator 인터페이스의 성질과 override 하고 있는 메소드 들에 대해서 잘 이해하는 것이 좋다.
+
+다음을 자바에서 2원 배열을 먼저 1번째 원소에 대해서 정렬하고, 1번째 원소가 같을 때 2번째 원소의 값에 대해서 정렬하는 것에 대한 코드이다. 알고리즘 문제를 풀면서 다차원 배열을 정렬할 때 매우 유용하므로 기록한다. 
+
+```java
+import java.util.Arrays;
+import java.util.Comparator;
+
+class Main{
+  public static void main(String[] args){
+    int[][] arr = new int[10][2];
+    
+    //위의 2차원 배열 arr에 대해서 1번째 원소에 대해서 정렬하고, 같다면 2번째 원소에 대해서 정렬하기
+    Arrays.sort(arr, new Comparator<int[]>(){
+      public int compare(int[] t1, int[] t2){
+        if(t1[0] == t2[0])
+          return t1[1] - t2[1];
+        else
+          return t1[0] - t2[0];
+      }
+    });
+  }
+}
+```
+
+
+
+
+
+
+
+---
+
 자바 자료구조, stack queue dequeue tree graph hashmap pair 등등 알리
 
 dfs bfs 코드 적기
 
 슬라이딩 윈도우 기법 -> dp에서 유용
+
+LCS/ LIS 코드 적기 
+
+(코드랑 문법이랑 나누자!)
+
+https://plplim.tistory.com/30  연산문제 더 나은 코드 
