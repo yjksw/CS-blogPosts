@@ -224,7 +224,7 @@ BernoulliModel::predict(string fe, string lang, string charset, hash<string,doub
 
 * 결과:
 
-<img src="Bernoulli.png", alt="Bernoulli result", width=50% />
+<img src="Bernoulli.png" alt="Bernoulli result" width=50% />
 
 
 
