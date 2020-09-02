@@ -120,9 +120,108 @@ class Main{
 * 복사를 했을 때 주소가 가리키는 것만 바꿈. 
 * source의 배열이 변경되면 해당 배열 또한 같은 주소를 가지고 있으므로 함께 변경됨. 
 
+
+
+##### JAVA 에서의 얕은 복사
+
+<img src="shallow.png" />
+
+```java
+int[] a = {1, 2, 3, 4};
+int[] b = a;
+```
+
+
+
 **2. Deep copy (깊은 복사)**
 
 * 복사를 했을 때, 새로운 배열이 생성되어 동일한 값 다른 주소를 가진 배열이 생성됨
+
+<img src="deep.png" />
+
+```java
+int[] a = {1, 2, 3, 4};
+int[]  = new int[a.length];
+
+for(int i =0; i < a.length;i++){
+  b[i] = a[i];
+}
+```
+
+
+
+###### JAVA에서 배열 복사를 위한 메서드
+
+1. Object.clone()
+
+```java
+int[] a = {1, 2, 3, 4};
+int[] b = a.clone();
+```
+
+깊은 복사의 가장 보편적인 방법임. *하지만 객체나 2차원 배열에는 해당되지 않음.*
+
+2. Arrays.copyOf()
+
+```java
+int[] a = {1, 2, 3, 4};
+int[] b = Arrays.copyOf(a, a.length);
+```
+
+배열의 시작점부터 원하는 length 까지 깊은 복사를 할 수 있음. 
+
+3. Arrays.copyOfRange()
+
+```java
+int[] a = {1, 2, 3, 4};
+int[] b = Arrays.copyOfRange(a, 1, 3);
+```
+
+배열을 복사할 시작점 또한 정의할 수 있음. 
+
+4. System.arraycopy()
+
+```java
+int[] a = {1, 2, 3, 4};
+int[] b = new int[a.length];
+System.arraycopy(a, 0, b, 0, a.length);
+```
+
+지정된 배열을 대상 배열의 지정된 위치에 복사할 수 있음. 
+
+
+
+#### 2차원 배열의 깊은 복사
+
+1차원 배열은 위의 메소드를 사용할 수 있지만 2차원 배열의 경우 해당되지 않는다. 
+
+2차원 배열의 경우 y좌표를 가리키는 주소 값만 있는 a[x] 부분만 깊은 복사가 되므로 다음 2가지 방법을 사용해야 한다. 
+
+1. 이중 for문 
+
+```java
+int a[][] = {{1,2,3},{4,5,6,},{7,8,9}};
+int[][] b = new int[a.length][a[0].length];
+	    
+for(int i=0; i<a.length; i++) {
+  for(int j=0; j<a[i].length; j++) {
+    b[i][j] = a[i][j];  
+  }
+}
+```
+
+
+
+2. System.arraycopy 
+
+```java
+int a[][] = {{1,2,3},{4,5,6,},{7,8,9}};
+int b[][] = new int[a.length][a[0].length];
+	    
+for(int i=0; i<b.length; i++){
+  System.arraycopy(a[i], 0, b[i], 0, a[0].length);
+}
+```
 
 
 
