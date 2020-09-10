@@ -220,7 +220,7 @@ int b[][] = new int[a.length][a[0].length];
 	    
 for(int i=0; i<b.length; i++){
   System.arraycopy(a[i], 0, b[i], 0, a[0].length);
-}
+ }
 ```
 
 
@@ -238,3 +238,4 @@ LCS/ LIS 코드 적기
 (코드랑 문법이랑 나누자!)
 
 https://plplim.tistory.com/30  연산문제 더 나은 코드 
+
