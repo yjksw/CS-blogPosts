@@ -47,3 +47,78 @@ Main() 함수에서 호출이 되는 함수는 모두 stack에 쌓이게 되고,
 
 <img src="memory.png" width=80% >
 
+### 재귀와 반복문 비교
+
+##### 재귀 vs. 반복문
+
+1. 기본 경우 일 때 종료 vs. 조건이 거짓일 때 종료
+2. 스택(메모리)에 추가 공간 필요 vs. 추가 공간 필요하지 않음.
+3. 무한 재귀시 stack overflow 발생 vs. 무한 반복시 추가 공간이 필요 없으므로 그저 무한 반복함
+
+일반적으로 반복문이 재귀보다 추가적인 메모리나 호출이 필요하지 않기 때문에 더 효율적이다. 
+
+
+
+## 별 찍기 문제해결
+
+재귀를 응용한 문제를 한번 살펴보자. 하노이나 피보나치 수열과 같은 문제들은 재귀를 통해서 여러번 언급된 문제들이니 재귀를 이용한 [별 찍기](https://www.acmicpc.net/problem/2447)를 가지고 설명해 보려고 한다. 해당 문제는 보기에 간단해 보이지만 재귀에 대한 깊은 이해가 있어야지 해결이 가능하다. 
+
+재귀를 사용해서 문제를 해결할 때 다음과 같은 과정을 거쳤다. 
+
+1. 반복되는 부분 파악
+2. 큰 문제 안에 작은 문제 찾기
+3. base condition  찾기
+
+위의 과정을 별 찍기 문제에 적용했을 때 다음과 같았다. 
+
+1. 가로, 세로를 3으로 나누어 중간이 비어 있음.
+2. 더 큰 정사각형은 그 전 단계의 정사각형을 하나의 단위로 가지고 있음.
+3. 별 그리기.
+
+위와 같이 3개를 모두 도출했다면 구현하는 것은 매우 간단하다. 먼저 base condition인 3)을 구현하고, 이후에 반복이 되는 1), 2)을 구현하면 된다. 
+
+
+
+**코드:**
+
+```java
+import java.util.Scanner;
+import java.util.Arrays;
+
+public class Main{
+	public static char fig[][];
+	public static void main(String[] args){
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		fig = new char[n][n];
+		
+		for(char[] row: fig){
+			Arrays.fill(row, ' ');}
+		drawFig(0, 0, n);
+
+		for(char[] row: fig){
+			System.out.println(row);}
+
+		return;
+	}
+  
+  public static void drawFig(int a, int b, int num){
+    if(num==1){
+      fig[a][b] = '*';
+      return;
+    }
+    int n = num/3;
+    for(int i=0;i<3;i++){
+      for(int j=0;j<3;j++){
+        if(i==1 && j==1)
+          continue;
+        drawFig((a*3)+1, (b*3)+j, n); 
+      }
+    }
+    return;
+  }
+}
+```
+
+
+
