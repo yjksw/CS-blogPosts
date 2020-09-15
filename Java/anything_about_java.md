@@ -215,12 +215,64 @@ for(int i=0; i<a.length; i++) {
 2. System.arraycopy 
 
 ```java
-int a[][] = {{1,2,3},{4,5,6,},{7,8,9}};
+int a[][] = {{1,2,3},{4,5,6},{7,8,9}};
 int b[][] = new int[a.length][a[0].length];
 	    
 for(int i=0; i<b.length; i++){
   System.arraycopy(a[i], 0, b[i], 0, a[0].length);
  }
+```
+
+
+
+## Comparator 사용
+
+위에서 2차원 배열을 정렬할 때 잠깐 언급하기는 했지만, 어떠한 클래스 변수등에 대해서 특별한(흔치 않은) 기준으로 정렬을 하고 싶을 때 사용하기 좋은 자바 문법이다. 
+
+어떤 기준으로 더 작으면 음수, 같으면 0, 더 크다면 양수를 리턴하여 정렬을 할 수 있도록 해주는 역할을 한다. 
+
+주로 객체를 정렬할 때 유용하게 사용된다.
+
+1. Class 로 따로 만들어서 `new`를 통해서 생성하여 사용할 수 있다.
+2. main 안에서 하나의 변수처럼 만들어서 적용할 수 있다. 
+
+```java
+import java.util.Comparator;
+
+public static void main(String[] args){
+  List<Point> arr = new ArrayList<>();
+  Point p1 = new Point(1, 2);
+  Point p2 = new Point(2, 1);
+  
+  arr.add(p1);
+  arr.add(p2);
+  
+  Collections.sort(arr, new xComparator()); //1번 경우
+  
+  Comparator<Point> yComparator = new Comparator<Point>() {
+    public int compare(Point p1, Point, p2){
+      return p1.y - p2.y;
+    }
+  };
+  
+  Collections.sort(arr, yComparator); //2번 경우
+  
+  return;
+}
+
+class xComparator implements Comparator<Point> {
+  public int compare(Point p1, Point p2){
+    return p1.x - p2.x;
+  }
+}
+class Point{
+  int x, y;
+  
+  public Point(int x, int y){
+    this.x = x;
+    this.y = y;
+  }
+}
 ```
 
 
