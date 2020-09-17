@@ -53,11 +53,186 @@
 
 "완전히 모르는 건 아닌데?" 라고 생각하기 쉽지만 제대로 생각해보면 나는 잘 활용하지 않았던 개념들이 있었다. 예를 들어, comparator를 생성하여 정렬하기 보다 조금 돌아가지만 이전에 하던 방식으로 일일이 정렬하는 방법을 주로 사용하고, 객체를 생성하여 코드가 직관적이게 되기 보다 배열에 나만 아는 규칙으로 끼워 넣는 경우가 많았던 것 같다. 한번 이 모든 개념들을 제대로 응용해서 좋은 코드를 짜보자. 
 
-
+아래의 대부분의 코드는 [사이트](https://octorbirth.tistory.com/274)에서 참고하고 내가 조금의 업그레이드를 시킨 정도이다. 
 
 #### JAVA Comparator 
 
+JAVA Comparator는 배열이나 객체 등을 sorting 하기 위해서 매우 유용한 인터페이스이다. 숫자가 아닌 무언가, 또는 조금 다른 기준을 통해서 정렬을 하기 원할 때, 이 comparator를 정의하여 사용하면 매우 유용하다. 
+
+기본적인 사용방법은 다음과 같다.
+
+1. Comparator를 implement 한 class 정의 
+2. `Arrays.sort`나, `Collections.sort`에서 내부 정렬 기준을 구현 하면됨. 
+
+비슷한 기능을 하는 인터페이스로는 Comparable이 있다. 이것은 어떠한 클래스에서 implement 하여 내부에 있는 compareTo 함수를 통해 클래스 기본 정렬 기준을 설정하는 것이다. 
+
+| Comparable | 클래스의 기본 정렬 기준을 설정하는 인터페이스              |
+| ---------- | ---------------------------------------------------------- |
+| Comparator | 기본 정렬 기준과는 다르게 정렬하고 싶을 때 이용하는 클래스 |
+
+이번에 **가장 가까운 두 점** 문제에서는 Comparator를 사용하여 sort 메소드를 통해서 사용할 예정이다. 우선 점들을 x좌표 기준으로 정렬하고, 이후에 y 기준으로 정렬하는 2가지 기준으로 정렬하는 클래스를 생성한다. 
+
+```java
+class xComparator implements Comparator<Point> {
+  public int compare(Point p1, Point p2){
+    return p1.x - p2.x;
+  }
+}
+
+class yComparator implements Comparator<Point> {
+  public int compare(Point p1, Point p2) {
+    return p1.y - p2.y;
+  }
+}
+```
 
 
 
+#### 재귀 Recursion
+
+거의 모든 알고리즘 문제의 일부분이 되는 재귀이지만 이번 문제에서 재귀를 활용하면서 재귀에 대해서 한층 더 이해할 수 있었다. 재귀에도 tail-recursion과 head-recursion이 나누어져 있고, 코드가 복잡해 질수록 더더욱 어느 타이밍에 재귀를 호출하는지가 매우 중요하다. 
+
+이번 풀이에서는 앞서 소개한 문제해결 방식을 재귀적으로 반복하여 매번 왼쪽, 오른쪽, 중간 가로지르는 부분으로 분할해 최소 거리를 찾도록 하였다. 이렇게 head-recursion으로 호출한 후에 return 된 최소 거리를 저장하고 이후에 처리해야 할 코드를 수행한다. 
+
+
+
+#### 객체 생성
+
+매번 이런 두 점과 같은 문제가 나올 때, 2차원 배열을 생성해서 수행했었다. 물론 그래도 아무 문제가 없고 이런 경우가 메모리나 속도 측면에서 더욱 효율적인 경우가 많다. 하지만 객체를 생성해서 데이터를 저장해야만 할 때가 있는데, 객체 생성을 해서 저장하는게 익숙하지 못해서 하지 못하는 경우가 많기 때문에 이번 문제에서 점의 좌표를 클래스 객체에 한번 담에 보았다. 생각보다 매우 간단하지만 첫 걸음이 어려워서 자주 사용하지 못했다고 생각한다. 
+
+```java
+class Point {
+  int x;
+  int y;
+  
+  public Point(int x, int y){
+    this.x = x;
+    this.y = y;
+  }
+}
+```
+
+
+
+#### 전체 코드
+
+다음과 같은 구성을 가지고 있다. 
+
+1. 점들 사이의 최소값을 분할정복으로 찾는 minDistance()
+2. 특정 기준 이하의 점들 사이의 최소값을 brute-force로 찾는 searchMin()
+3. 점들 사이의 거리를 계산하는 distance()
+4. xComparator와 yComparator
+5. Point 클래스 객체
+
+
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.StringTokenizer;
+import java.util.Arrays;
+import java.util.Collections;
+
+class Main {
+  static Point[] value;
+  public static void main(String[] args) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = null;
+    
+    int n = Integer.parseInt(br.readLine());
+    value = new Point[n];
+    
+    for(int i=0;i<n;i++){
+      st = new StringTokenizer(br.readLine());
+      int x = Integer.parseInt(st.nextToken());
+      int y = Integer.parseInt(st.nextToken());
+      value[i] = new Point(x, y);
+    }
+    
+    Arrays.sort(value, new xComparator());
+    
+    int answer = minDistance(0, n-1);
+    System.out.println(answer);
+    br.close();
+    
+    return;
+  }
+  
+  public static int minDistance(int begin, int end){
+    int size = end-begin+1;
+    if(size<=3) {
+      return searchMin(begin, end);
+    }
+    
+    int mid = (begin+end)/2;
+    int d1 = minDistance(begin, mid);
+    int d2 = minDistance(mid+1, end);
+    
+    int result = Math.min(d1, d2);
+    
+    ArrayList<Point> mid_list = new ArrayList<>();
+    
+    for(int i=mid-1;i>=begin;i--) {
+      int xDist = value[mid].x - value[i].x;
+      if((xDist*xDist) < result) {
+        mid_list.add(value[i]);
+      } else
+        break;
+    }
+    
+    for(int i=mid+1;i<=end;i++) {
+      int xDist = value[mid].x - value[i].x;
+      if((xDist*xDist) < result) {
+        mid_list.add(value[i]);
+      } else
+        break;
+    }
+    
+    Collections.sort(mid_list, new yComparator());
+    int mlist_size = mid_list.size();
+    
+    for(int i=0;i<mlist_size-1;i++){
+      for(int j=0;j<mlist_size;j++){
+        int yDist = mid_list.get(i).y - mid_list.get(j).y;
+        if(yDist*yDist < result) {
+          int dist = distance(mid_list.get(i), mid_list.get(j));
+          if(dist < result)
+            result = dist;
+        } else
+          break;
+      }
+    }
+    return result;
+  }
+  
+  public static int distance(Point a, Point b){
+    return(a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y);
+  }
+}
+  
+class xComparator implements Comparator<Point> {
+  public int compare(Point p1, Point p2){
+    return p1.x - p2.x;
+  }
+}
+
+class yComparator implements Comparator<Point> {
+  public int compare(Point p1, Point p2) {
+    return p1.y - p2.y;
+  }
+}
+
+class Point {
+  int x;
+  int y;
+  
+  public Point(int x, int y){
+    this.x = x;
+    this.y = y;
+  }
+}
+```
 
