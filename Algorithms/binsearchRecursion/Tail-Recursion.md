@@ -21,7 +21,7 @@ Tail-Recursion이란 recursion 함수에서 가장 나중에 실행되는 명령
 
 ### Tail-Recursion의 효능
 
-Tail-recursion은 주로 non tail recursion에 비교해서 성능이 더 좋은 것으로 나타난다. 마지막 recursion을 call 하고, 해당 호출에 연산이 포함되어 있지 않는다면 컴파일러에 의해서 해당 tail-recursion 함수는 optimize 된다. 이 이유는, tail-recursion 함수의 경우, 함수의 가장 마지막으로 실행하는 것이 recursive call이기 때문에 현재 머물고 있는 함수에 더 이상 진행할 instructiond이 없고 따라서 현재 함수를 stack에 저장하지 않아도 된다. 때문에 non tail recursion 보다 더 빠르고, stack 메모리를 사용하지 않는 장점을 지닌다. 
+Tail-recursion은 주로 non tail recursion에 비교해서 성능이 더 좋은 것으로 나타난다. 마지막 recursion을 call 하고, 해당 호출에 연산이 포함되어 있지 않는다면 컴파일러에 의해서 해당 tail-recursion 함수는 optimize 된다. 이 이유는, tail-recursion 함수의 경우, 함수의 가장 마지막으로 실행하는 것이 recursive call이기 때문에 현재 머물고 있는 함수에 더 이상 진행할 instruction이 없고 따라서 현재 함수를 stack에 저장하지 않아도 된다. 때문에 non tail recursion 보다 더 빠르고, stack 메모리를 사용하지 않는 장점을 지닌다. 
 
 
 
